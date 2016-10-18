@@ -37,4 +37,14 @@ public class BasicEntityBLL extends  EntityBLL {
         items.clear();
     }
 
+    public ArrayList<APIEntity> getAPIItems(){
+
+        ArrayList<APIEntity> lItems = new ArrayList<APIEntity>();
+        for (BasicEntity l: items) {
+            lItems.add(l);
+        }
+
+        return lItems;
+    }
+
 }
