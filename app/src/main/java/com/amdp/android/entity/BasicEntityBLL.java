@@ -33,4 +33,8 @@ public class BasicEntityBLL extends  EntityBLL {
         return items;
     }
 
+    public  void clear(){
+        items.clear();
+    }
+
 }
