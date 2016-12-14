@@ -1,5 +1,12 @@
 package com.amdp.android.entity;
 
+import android.text.TextUtils;
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -8,6 +15,7 @@ import java.util.ArrayList;
 
 public class BasicEntityBLL extends  EntityBLL {
 
+    private static final String TAG = "BasicEntityBLL";
     private static BasicEntityBLL ourInstance = new BasicEntityBLL();
 
     private BasicEntity current;
@@ -16,7 +24,7 @@ public class BasicEntityBLL extends  EntityBLL {
     private ArrayList<BasicEntity> items = new ArrayList<BasicEntity>();
 
 
-    private BasicEntityBLL(){
+    protected BasicEntityBLL(){
 
     }
 
@@ -46,5 +54,39 @@ public class BasicEntityBLL extends  EntityBLL {
 
         return lItems;
     }
+
+    public void fillItems(String json, String elementName){
+
+
+        try {
+            JSONObject result = new JSONObject(json);
+            JSONArray jsonArray = result.getJSONArray(elementName);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                fillItem(jsonArray.getString(i));
+            }
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+
+    public void fillItem(String jsonItem) {
+        BasicEntity item = new BasicEntity();
+        try {
+            JSONObject result = new JSONObject(jsonItem);
+            item.setEntityId(result.getString("id").trim());
+            item.setName(result.getString("name").trim());
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+        if(TextUtils.isEmpty(item.getName()) == false){
+            this.add(item);
+        }
+
+
+    }
+
+
 
 }
