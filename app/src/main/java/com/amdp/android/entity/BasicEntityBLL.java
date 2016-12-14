@@ -55,18 +55,26 @@ public class BasicEntityBLL extends  EntityBLL {
         return lItems;
     }
 
-    public void fillItems(String json, String elementName){
-
-
+    public void fillItems(String json, String elementName) {
         try {
-            JSONObject result = new JSONObject(json);
-            JSONArray jsonArray = result.getJSONArray(elementName);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                fillItem(jsonArray.getString(i));
+            if(json.startsWith("[")){
+                json = json.substring(1);
             }
-        } catch (JSONException e) {
-            Log.e(TAG, e.getMessage());
+
+            if(json.endsWith("]")){
+                json = json.substring(0,json.length()-1);
+            }
+
+
+            JSONObject object = new JSONObject(json);
+            JSONArray jsonArray = object.getJSONArray(elementName);
+            for(int i = 0; i < jsonArray.length(); ++i) {
+                this.fillItem(jsonArray.getString(i));
+            }
+        } catch (JSONException var6) {
+            Log.e("BasicEntityBLL", var6.getMessage());
         }
+
     }
 
 
